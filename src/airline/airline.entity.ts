@@ -1,4 +1,5 @@
-import { AirportEntity } from 'src/airport/airport.entity';
+/* eslint-disable prettier/prettier */
+import { AirportEntity } from '../airport/airport.entity';
 import {
   Column,
   Entity,
@@ -7,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-/* eslint-disable prettier/prettier */
 @Entity()
 export class AirlineEntity {
   @PrimaryGeneratedColumn('uuid')
