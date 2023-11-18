@@ -88,6 +88,22 @@ describe('AirlineService', () => {
     expect(storedairline.webPage).toEqual(newairline.webPage);
   });
 
+  it('create should throw an exception for an invalid foundation date', async () => {
+    const airline: AirlineEntity = {
+      id: '',
+      name: faker.company.name(),
+      description: faker.lorem.sentence(),
+      foundationDate: faker.date.future(),
+      webPage: faker.internet.url(),
+      airports: [],
+    };
+
+    await expect(() => service.create(airline)).rejects.toHaveProperty(
+      'message',
+      'The foundation date must be earlier than now',
+    );
+  });
+
   it('update should modify an airline', async () => {
     const airline: AirlineEntity = airlinesList[0];
     airline.name = 'New name';
@@ -117,6 +133,21 @@ describe('AirlineService', () => {
     await expect(() => service.update('0', airline)).rejects.toHaveProperty(
       'message',
       'The airline with the given id was not found',
+    );
+  });
+
+  it('update should throw an exception for an invalid foundation date', async () => {
+    let airline: AirlineEntity = airlinesList[0];
+    airline = {
+      ...airline,
+      name: 'New name',
+      foundationDate: faker.date.future(),
+    };
+    await expect(() =>
+      service.update(airline.id, airline),
+    ).rejects.toHaveProperty(
+      'message',
+      'The foundation date must be earlier than now',
     );
   });
 

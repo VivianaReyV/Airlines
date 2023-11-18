@@ -34,7 +34,9 @@ export class AirlineService {
   }
 
   async create(airline: AirlineEntity): Promise<AirlineEntity> {
-    if (airline.foundationDate < new Date()) {
+    const foundationDate = new Date(airline.foundationDate);
+    const currentDate = new Date().toISOString().split('T')[0];
+    if (foundationDate.toISOString().split('T')[0] < currentDate) {
       return await this.airlineRepository.save(airline);
     } else {
       throw new BusinessLogicException(
@@ -54,7 +56,9 @@ export class AirlineService {
         'The airline with the given id was not found',
         BusinessError.NOT_FOUND,
       );
-    if (persistedAirline.foundationDate < new Date()) {
+    const foundationDate = new Date(airline.foundationDate);
+    const currentDate = new Date().toISOString().split('T')[0];
+    if (foundationDate.toISOString().split('T')[0] < currentDate) {
       return await this.airlineRepository.save({
         ...persistedAirline,
         ...airline,

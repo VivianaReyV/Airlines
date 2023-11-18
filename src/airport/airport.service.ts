@@ -52,7 +52,7 @@ export class AirportService {
         'The airport with the given id was not found',
         BusinessError.NOT_FOUND,
       );
-    if (persistedAirport.code.length === 3) {
+    if (airport.code.length === 3) {
       return await this.airportRepository.save({
         ...persistedAirport,
         ...airport,

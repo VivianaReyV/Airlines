@@ -88,6 +88,22 @@ describe('AirportService', () => {
     expect(airport.city).toEqual(storedairport.city);
   });
 
+  it('create should throw an exception for an invalid airport code', async () => {
+    const airport: AirportEntity = {
+      id: '',
+      name: faker.company.name(),
+      code: faker.lorem.word(4),
+      country: faker.lorem.word(),
+      city: faker.lorem.word(),
+      airlines: [],
+    };
+
+    await expect(() => service.create(airport)).rejects.toHaveProperty(
+      'message',
+      'The airport code must contain three characters',
+    );
+  });
+
   it('update should modify an airport', async () => {
     const airport: AirportEntity = airportsList[0];
     airport.name = 'New name';
@@ -117,6 +133,22 @@ describe('AirportService', () => {
     await expect(() => service.update('0', airport)).rejects.toHaveProperty(
       'message',
       'The airport with the given id was not found',
+    );
+  });
+
+  it('update should throw an exception for an invalid airport code', async () => {
+    let airport: AirportEntity = airportsList[0];
+    airport = {
+      ...airport,
+      name: 'New name',
+      code: 'ABCD',
+    };
+
+    await expect(() =>
+      service.update(airport.id, airport),
+    ).rejects.toHaveProperty(
+      'message',
+      'The airport code must contain three characters',
     );
   });
 
